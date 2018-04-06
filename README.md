@@ -1,11 +1,13 @@
 ## Smart Scroll Container (hides items outside viewport).
 
 Usage:
-```
+```jsx
+import SmartScrollContainer from 'react-smart-scroll-container';
+
 <SmartScrollContainer avgItemHeight={100} initialVisibleCount={10}>
-    <div className="b-card">ITEM1</div>
-    <div className="b-card">ITEM2</div>
-    <div className="b-card">ITEM3</div>
-    <div className="b-card">ITEM4</div>
+    <div>ITEM1</div>
+    <div>ITEM2</div>
+    <div>ITEM3</div>
+    <div>ITEM4</div>
 </SmartScrollContainer>
 ```
