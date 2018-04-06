@@ -35,6 +35,20 @@ export default class SmartScrollContainer extends PureComponent {
         window.removeEventListener('resize', this._lazyRecalculate)
     }
 
+    componentWillReceiveProps(props) {
+        if (props.children.length > this.props.children.length) {
+            const root = this._root
+            if (
+                root.scrollTop &&
+                root.scrollHeight - root.scrollTop - root.clientHeight < 5
+            ) {
+                this.setState({
+                    renderCount: this.state.renderCount + 1,
+                })
+            }
+        }
+    }
+
     render() {
         const children = this.props.children
         const count = Math.min(
@@ -88,21 +102,19 @@ export default class SmartScrollContainer extends PureComponent {
             this.state.renderCount ||
             this.props.initialVisibleCount ||
             DEFAULT_RENDER_COUNT
-        const lastItem = root.children[count]
+        const lastItem = root.children[count - 1]
 
         if (lastItem) {
             const delta =
                 root.clientHeight +
                 root.scrollTop +
                 SAFE_OFFSET -
-                lastItem.offsetTop
+                (lastItem.offsetTop + lastItem.clientHeight)
 
             if (delta > 0) {
                 this.setState({
-                    renderCount: Math.min(
+                    renderCount:
                         count + Math.ceil(delta / this.props.minItemHeight),
-                        this.props.children.length
-                    ),
                 })
             }
         }

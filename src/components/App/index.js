@@ -3,28 +3,38 @@ import './index.css'
 import SmartScrollContainer from '../SmartScrollContainer'
 
 export default class App extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            itemsCount: 5,
+        }
+    }
+
     render() {
+        const { itemsCount } = this.state
+
         return (
             <div className="App">
-                <SmartScrollContainer minItemHeight={50} initialVisibleCount={10} className="b-list">
-                    <div className="b-card">ITEM1</div>
-                    <div className="b-card">ITEM2</div>
-                    <div className="b-card">ITEM3</div>
-                    <div className="b-card">ITEM4</div>
-                    <div className="b-card">ITEM5</div>
-                    <div className="b-card">ITEM6</div>
-                    <div className="b-card">ITEM7</div>
-                    <div className="b-card">ITEM8</div>
-                    <div className="b-card">ITEM9</div>
-                    <div className="b-card">ITEM10</div>
-                    <div className="b-card">ITEM11</div>
-                    <div className="b-card">ITEM12</div>
-                    <div className="b-card">ITEM13</div>
-                    <div className="b-card">ITEM14</div>
-                    <div className="b-card">ITEM15</div>
-                    <div className="b-card">ITEM16</div>
+                <button onClick={this._onAddClick}>Add Item</button>
+                <SmartScrollContainer
+                    minItemHeight={40}
+                    initialVisibleCount={5}
+                    className="b-list"
+                >
+                    {Array.from({ length: itemsCount }).map((item, i) => (
+                        <div key={i} className="b-card">
+                            ITEM{i}
+                        </div>
+                    ))}
                 </SmartScrollContainer>
             </div>
         )
+    }
+
+    _onAddClick = () => {
+        this.setState({
+            itemsCount: this.state.itemsCount + 1,
+        })
     }
 }
