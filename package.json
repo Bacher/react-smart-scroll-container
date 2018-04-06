@@ -1,0 +1,33 @@
+{
+  "name": "react-smart-scroll-container",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "publish":
+      "mv package.json package_.json && mv package_publish.json package.json && npm publish; mv package.json package_publish.json; mv package_.json package.json"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 4,
+    "trailingComma": "es5",
+    "semi": false,
+    "overrides": [
+      {
+        "files": ["*.css", "*.json"],
+        "options": {
+          "tabWidth": 2
+        }
+      }
+    ]
+  }
+}

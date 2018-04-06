@@ -1,0 +1,15 @@
+{
+  "name": "react-smart-scroll-container",
+  "version": "0.1.0",
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "main": "src/components/SmartScrollContainer/index.js",
+  "files": ["src/components/SmartScrollContainer"],
+  "author": {
+    "name": "Ilya Lebedev",
+    "email": "bacherko@gmail.com",
+    "url": "https://github.com/Bacher/react-smart-scroll-container"
+  }
+}
