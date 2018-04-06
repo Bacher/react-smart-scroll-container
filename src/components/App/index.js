@@ -6,7 +6,7 @@ export default class App extends Component {
     render() {
         return (
             <div className="App">
-                <SmartScrollContainer avgItemHeight={50} initialVisibleCount={10} className="b-list">
+                <SmartScrollContainer minItemHeight={50} initialVisibleCount={10} className="b-list">
                     <div className="b-card">ITEM1</div>
                     <div className="b-card">ITEM2</div>
                     <div className="b-card">ITEM3</div>

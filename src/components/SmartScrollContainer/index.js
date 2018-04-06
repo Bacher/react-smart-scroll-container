@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react'
 
-const SAFE_OFFSET = 100;
+const DEFAULT_RENDER_COUNT = 5
+const SAFE_OFFSET = 100
 
 function lazy(fn, ms = 50) {
-    let timeoutId = null;
+    let timeoutId = null
 
     return function() {
         if (!timeoutId) {
             timeoutId = setTimeout(function() {
-                timeoutId = null;
+                timeoutId = null
                 fn()
             }, ms)
         }
@@ -23,23 +24,41 @@ export default class SmartScrollContainer extends PureComponent {
             renderCount: null,
         }
 
-        this._lazyOnScroll = lazy(this._onScroll)
+        this._lazyRecalculate = lazy(this.recalculate)
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this._lazyRecalculate)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this._lazyRecalculate)
     }
 
     render() {
-        const children = this.props.children;
-        const count = Math.min(this.state.renderCount || this.props.initialVisibleCount, children.length)
+        const children = this.props.children
+        const count = Math.min(
+            this.state.renderCount ||
+                this.props.initialVisibleCount ||
+                DEFAULT_RENDER_COUNT,
+            children.length
+        )
 
-        let items;
+        let items
 
-        if (children.length < count) {
+        if (count < children.length) {
             items = children.slice(0, count)
 
             for (let i = count; i < this.props.children.length; i++) {
-                items.push(<div key={`_s${i}`} style={{ height: this.props.avgItemHeight || '50px' }} />)
+                items.push(
+                    <div
+                        key={`_s${i}`}
+                        style={{ height: this.props.minItemHeight }}
+                    />
+                )
             }
         } else {
-            items = children;
+            items = children
         }
 
         return (
@@ -47,7 +66,7 @@ export default class SmartScrollContainer extends PureComponent {
                 className={this.props.className}
                 style={{ overflowY: 'auto' }}
                 ref={this._onRef}
-                onScroll={this._lazyOnScroll}
+                onScroll={this._lazyRecalculate}
             >
                 {items}
             </div>
@@ -58,24 +77,32 @@ export default class SmartScrollContainer extends PureComponent {
         this._root = el
 
         if (el) {
-            this._recalc()
+            this.recalculate()
         }
     }
 
-    _onScroll = () => {
-        this._recalc()
-    }
-
-    _recalc() {
+    recalculate = () => {
         const root = this._root
 
-        const count = this.state.renderCount || this.props.initialVisibleCount
+        const count =
+            this.state.renderCount ||
+            this.props.initialVisibleCount ||
+            DEFAULT_RENDER_COUNT
         const lastItem = root.children[count]
 
         if (lastItem) {
-            if (lastItem.offsetTop < root.clientHeight + root.scrollTop + SAFE_OFFSET) {
+            const delta =
+                root.clientHeight +
+                root.scrollTop +
+                SAFE_OFFSET -
+                lastItem.offsetTop
+
+            if (delta > 0) {
                 this.setState({
-                    renderCount: count + 1,
+                    renderCount: Math.min(
+                        count + Math.ceil(delta / this.props.minItemHeight),
+                        this.props.children.length
+                    ),
                 })
             }
         }

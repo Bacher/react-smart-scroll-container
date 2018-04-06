@@ -4,7 +4,7 @@ Usage:
 ```jsx
 import SmartScrollContainer from 'react-smart-scroll-container';
 
-<SmartScrollContainer avgItemHeight={100} initialVisibleCount={10}>
+<SmartScrollContainer minItemHeight={100} initialVisibleCount={10}>
     <div>ITEM1</div>
     <div>ITEM2</div>
     <div>ITEM3</div>
